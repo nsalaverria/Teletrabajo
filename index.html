@@ -33,10 +33,11 @@
       background-color: #b3ffb3; /* Color de fondo verde claro */
     }
     
-    .cool-title {
+   .cool-title {
       font-family: 'Archivo Black', sans-serif;
-      font-size: 40px;
+      font-size: 30px;
       color: #333333;
+      margin-bottom: 10px; /* Ajustar el margen inferior del título */
     }
     
     .button-container {
@@ -45,12 +46,21 @@
       align-items: center;
       margin-top: 10px; /* Ajusta el margen superior del contenedor de los botones de eliminación */
     }
+    
+     .total-counter {
+      margin-top: 5px;
+      font-weight: bold;
+	  font-family: 'Archivo Black', sans-serif;
+      font-size: 15px;
+      color: #333333;
+    }
   </style>
 </head>
 <body>
 
   <h1 class="cool-title">Teletrabajo</h1>
-
+   
+   <div class="total-counter">Total de votos: <span id="total-votes">0</span></div>
   <canvas id="barras"></canvas>
 
   <div class="buttons">
@@ -85,7 +95,9 @@
   </div>
 
   <script>
+  
     var datos = [0, 0, 0, 0, 0, 0, 0]; // Valores iniciales de las barras
+    var totalVotos = 0; // Contador total de votos
 
     var ctx = document.getElementById('barras').getContext('2d');
     var myChart = new Chart(ctx, {
@@ -135,7 +147,9 @@
 
     function sumarVoto(indice) {
       datos[indice]++;
+      totalVotos++;
       actualizarEscala();
+      actualizarTotalVotos();
       myChart.data.datasets[0].data = datos;
       myChart.update();
     }
@@ -143,7 +157,9 @@
     function restarVoto(indice) {
       if (datos[indice] > 0) {
         datos[indice]--;
+        totalVotos--;
         actualizarEscala();
+        actualizarTotalVotos();
         myChart.data.datasets[0].data = datos;
         myChart.update();
       }
@@ -153,7 +169,11 @@
       var maximo = Math.max(...datos); 
       myChart.options.scales.y.max = Math.ceil(maximo / 5) * 5; 
     }
+
+    function actualizarTotalVotos() {
+      document.getElementById('total-votes').textContent = totalVotos;
+    }
+	
   </script>
 </body>
 </html>
-
